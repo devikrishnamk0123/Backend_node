@@ -1,4 +1,4 @@
-
+import { calcu } from "./calculator";
 //const http = require("http");
 import express from "express";
 //const express = ("express");
@@ -26,3 +26,12 @@ server.listen(3000,()=>{
 
 //npx command used to directly initialise any module without installing it.
 //tsc - typescript compiler
+
+const mycalcu = new calcu;
+mycalcu.add(2,3);
+mycalcu.sub(2,3);
+mycalcu.mul(3,4);
+mycalcu.div(10,6);
+mycalcu.power(2,3);
+mycalcu.fact(4);
+mycalcu.percentage(60);
