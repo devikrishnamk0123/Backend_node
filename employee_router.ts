@@ -93,6 +93,7 @@ employeeRouter.put('/:id',async(req,res)=>{
 
     emp.email = req.body.email;
     emp.name = req.body.name;
+    emp.updatedAt = new Date();
     await employeeRepository.save(emp);
     //emp.updatedAt = new Date();
     res.status(201).send("employee updated")
