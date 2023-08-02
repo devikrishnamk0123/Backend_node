@@ -1,6 +1,8 @@
 import { calcu } from "./calculator";
 //const http = require("http");
 import express from "express";
+import "reflect-metadata"
+import AppDataSource from "./data-source";
 
 import employeeRouter from "./employee_router";
 import { Employee } from "./employee";
@@ -28,9 +30,13 @@ server.get('/',(req,res)=>{
 // });
 // frontend communicates to server using 3000 port.
 
-server.listen(3000,()=>{
-    console.log("server is listening to 3000")
-});
+(async ()=> {
+    await AppDataSource.initialize(); 
+
+    server.listen(3000,()=>{
+    console.log("server is listening to 3000")});
+
+})();
 //package.json file
 //scripts - name each scripts - use npm run scriptname
 //gitignore - to exclude files that need not be committed. like node modules.
