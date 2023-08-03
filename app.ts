@@ -53,3 +53,10 @@ server.get('/',(req,res)=>{
 // mycalcu.power(2,3);
 // mycalcu.fact(4);
 // mycalcu.percentage(60);
+
+
+//controller - takes in request
+//service layer - processing of req - business lofic is implemented. needs repository
+//repository - data persistence.
+
+//different entities are implemented using the layered architecture. Dept repository cannot access Employee repositiry. Dept services can access Employee services.

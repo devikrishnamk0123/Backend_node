@@ -2,7 +2,7 @@ import express from "express";
 import { Employee } from "./employee";
 import { Client } from 'pg';
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
-import { DataSource } from "typeorm";
+import { DataSource,FindOptionsWhere,Like } from "typeorm";
 import AppDataSource from "./data-source";
 //to group all requests.
 let count = 2;
@@ -12,8 +12,36 @@ const employeeRouter = express.Router();
 
 employeeRouter.get('/',async (req,res)=>{
     console.log(req.url);
+    const nameFilter = req.query.name as string;
+    const emailFilter = req.query.email;
+
+
+    // const filters: FindOptionsWhere<Employee>={};
+    // if (nameFilter){
+    //     filters.name = Like(nameFilter+"%");
+    // }
+
+    //console.log(String(nameFilter));
     const employeeRepository = AppDataSource.getRepository(Employee);
-    const employees = await employeeRepository.find();
+    // const employees = await employeeRepository.find({
+    //     where:{
+    //         name: Like(nameFilter as string + "%"),
+    //         email: Like("%" + emailFilter as string + "%")
+    //     }
+    // });
+    // const employees = await employeeRepository.find({
+    //     where: filters
+    // });
+    const qb = employeeRepository.createQueryBuilder();
+
+    if (nameFilter){
+        qb.andWhere("name LIKE :name",{name: `${nameFilter}%`});
+    }
+
+    if (emailFilter){
+        qb.andWhere("email LIKE :email",{email: `%${emailFilter}%`});
+    }
+    const employees = await qb.getMany();
     res.status(200).send(employees);
 });
 
@@ -110,7 +138,8 @@ employeeRouter.delete('/:id',async (req,res)=>{
     const employeeRepository = AppDataSource.getRepository(Employee);
     const emp = await employeeRepository.findOneBy({id: Number(req.params.id)});
     //const emp = employees.find(employee=>employee.id === Number(req.params.id));
-    employeeRepository.delete(emp.id);
+
+    employeeRepository.softRemove(emp);
     //const emp = employees.find(employee=>employee.id === Number(req.params.id));
     //const index = employees.findIndex(employee=>employee.id === Number(req.params.id));
     //employees.splice(index,1);
@@ -121,16 +150,16 @@ employeeRouter.delete('/:id',async (req,res)=>{
 export default employeeRouter;
 
 
-const employees: Employee[] = [{
-    id:1,
-    name:"Devi",
-    email:"devi@gmail.com",
-    createdAt:new Date(),
-    updatedAt:new Date()
-},{
-    id:2,
-    name:"John",
-    email:"john@gmail.com",
-    createdAt:new Date(),
-    updatedAt:new Date()
-}]
+// const employees: Employee[] = [{
+//     id:1,
+//     name:"Devi",
+//     email:"devi@gmail.com",
+//     createdAt:new Date(),
+//     updatedAt:new Date()
+// },{
+//     id:2,
+//     name:"John",
+//     email:"john@gmail.com",
+//     createdAt:new Date(),
+//     updatedAt:new Date()
+// }]

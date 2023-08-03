@@ -1,4 +1,4 @@
-import {Column, Entity ,CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity ,CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, DeleteDateColumn} from "typeorm";
 
 @Entity("employees")
 class Employee{
@@ -13,6 +13,9 @@ class Employee{
     createdAt: Date;
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @DeleteDateColumn() //soft delete.
+    deletedAt: Date;
 }
 
 export {Employee}
