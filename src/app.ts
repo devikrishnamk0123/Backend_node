@@ -1,19 +1,18 @@
-import { calcu } from "./calculator";
+
 //const http = require("http");
 import express from "express";
 import "reflect-metadata"
-import AppDataSource from "./data-source";
+import AppDataSource from "./db/postgres.db";
+import loggerMiddleware from "./middleware/logger.middleWare";
+import employeeRoute from "./route/employee.route";
 
-import employeeRouter from "./employee_router";
-import { Employee } from "./employee";
-import loggerMiddleware from "./loggerMiddleWare";
 
 
 //const express = ("express");
 const server = express();
 server.use(express.json());
 server.use(loggerMiddleware); //use loggerMidlleware before employeerouter.
-server.use('/employees',employeeRouter); // any requests ending with /employees, then call employeeRouter
+server.use('/employees',employeeRoute); // any requests ending with /employees, then call employeeRouter
 
 
 
