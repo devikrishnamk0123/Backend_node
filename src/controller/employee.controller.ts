@@ -51,7 +51,7 @@ class EmployeeController{
             const errors = await validate(putEmployeeDto);
             if (errors.length > 0){
                 console.log(errors);
-                throw new ValidationException(404,`not valid request`,errors);
+                throw new ValidationException(400,`Validation errors`,errors);
 
             }
             else
@@ -79,7 +79,7 @@ class EmployeeController{
             const errors = await validate(createEmployeeDto);
             if (errors.length > 0){
                 console.log(errors);
-                throw new ValidationException(404,`Not valid request`,errors);
+                throw new ValidationException(400,`Validation errors`,errors);
             }
             else{
                 const newName = req.body.name;

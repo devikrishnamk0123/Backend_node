@@ -13,7 +13,7 @@ const errorMiddleWare = (
     try{
         console.error(error.stack);
         if (error instanceof ValidationException){
-            res.status(error.status).send({error: error.handleValidationError(error.error)})
+            res.status(error.status).send({message: error.message,error: error.handleValidationError(error.error)})
         }
         if (error instanceof HttpException){
             res.status(error.status).send({error:error.message});

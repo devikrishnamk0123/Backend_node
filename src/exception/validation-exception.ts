@@ -21,6 +21,7 @@ class ValidationException extends HttpException{
             }
             else{
                 handledErrorObject[errorProperty] = Object.values(element.constraints);
+                //return handledErrorObject;
             }
         })
         return handledErrorObject;
