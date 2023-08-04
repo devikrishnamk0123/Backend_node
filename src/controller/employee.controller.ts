@@ -51,6 +51,7 @@ class EmployeeController{
             const errors = await validate(putEmployeeDto);
             if (errors.length > 0){
                 console.log(errors);
+                throw new ValidationException(404,`not valid request`,errors);
 
             }
             else
