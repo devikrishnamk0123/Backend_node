@@ -19,7 +19,12 @@ class EmployeeRepository{
 
     findOneBy(id:number):Promise<Employee>{
         //const employeeRepository = this.datasource.getRepository(Employee);
-        return this.employeeRepository.findOneBy({id:id});
+        return this.employeeRepository.findOne({
+            where: {id:id},
+            relations:{
+                address:true,
+            },
+        });
     }
     //write all other functions
 
@@ -27,8 +32,8 @@ class EmployeeRepository{
         return this.employeeRepository.save(emp);
     }
 
-    softDelete(id:number):Promise<UpdateResult>{
-        return this.employeeRepository.softDelete(id);
+    softRemove(employee:Employee){
+        this.employeeRepository.softRemove(employee);
     }
     
 }

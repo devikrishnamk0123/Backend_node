@@ -1,4 +1,5 @@
-import {Column, Entity ,CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, DeleteDateColumn} from "typeorm";
+import {Column, Entity ,CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, DeleteDateColumn, OneToOne} from "typeorm";
+import Address from "./address.entity";
 
 @Entity("employees")
 class Employee{
@@ -6,6 +7,8 @@ class Employee{
     id:number;
     @Column()
     name: string;
+    @Column({nullable:true})
+    age:number;
     @Column()
     email: string;
 
@@ -16,6 +19,11 @@ class Employee{
 
     @DeleteDateColumn() //soft delete.
     deletedAt: Date;
+
+    @OneToOne(()=>Address,(address)=>address.employee,{cascade: true}) // entity pointing to. function 
+    address:Address;
+
+
 }
 
 export {Employee}

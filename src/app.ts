@@ -1,10 +1,12 @@
 
 //const http = require("http");
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import "reflect-metadata"
 import AppDataSource from "./db/postgres.db";
 import loggerMiddleware from "./middleware/logger.middleWare";
 import employeeRoute from "./route/employee.route";
+import HttpException from "./exception/http.exception";
+import errorMiddleWare from "./middleware/error.middleware";
 
 
 
@@ -13,6 +15,8 @@ const server = express();
 server.use(express.json());
 server.use(loggerMiddleware); //use loggerMidlleware before employeerouter.
 server.use('/employees',employeeRoute); // any requests ending with /employees, then call employeeRouter
+//error middleware should be used after the requests have gone to the route - takes 4th parameter - error object.
+
 
 
 
@@ -22,6 +26,17 @@ server.get('/',(req,res)=>{
     res.status(200).send("Helo world express,typescript")
 });
 
+// server.use((error:Error,req:Request,res:Response,next:NextFunction)=>{ //error middleWare takes 4th parameter error.
+//     console.log(error.stack);
+//     if (error instanceof HttpException){
+//         res.status(error.status).send({error:error.message});
+//         return;
+//     }
+//     console.log(error);
+//     res.status(500).send(error.message);
+// });
+
+server.use(errorMiddleWare);
 
 // const server = http.createServer((req,res)=>{
 //     res.writeHead(200);

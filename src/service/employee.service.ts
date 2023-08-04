@@ -1,6 +1,8 @@
 import { UpdateResult } from "typeorm";
 import { Employee } from "../entity/employee.entity";
 import employeeRepository from "../repository/employee.repository";
+import Address from "../entity/address.entity";
+import HttpException from "../exception/http.exception";
 
 class EmployeeService{
     //private employeeRepository: employeeRepository;
@@ -14,9 +16,15 @@ class EmployeeService{
         return this.employeeRepository.find();
     }
 
-    getEmployeeById(id:number):Promise<Employee|null>
+    async getEmployeeById(id:number):Promise<Employee|null>
     {
-        return this.employeeRepository.findOneBy(id);
+        const employee = await this.employeeRepository.findOneBy(id);
+        if (!employee){
+            throw new HttpException(404,`Employee not found with id: ${id}`);
+            //throw new Error(`Employee not found with id: ${id}`); 
+        }
+        //return this.employeeRepository.findOneBy(id);
+        return employee;
     }
 
 
@@ -31,20 +39,21 @@ class EmployeeService{
         
     }
 
-    async postEmployee(name:string,email:string){
+    async postEmployee(name:string,email:string,address:Address){
         const employee = new Employee();
         employee.email = email;
         employee.name = name;
-        
+
+        const newAddress = new Address();
+        newAddress.line1 = address.line1;
+        newAddress.pincode = address.pincode;
+        employee.address = newAddress;
         return this.employeeRepository.saveId(employee)
     }
 
-    async deleteEmployee(id:number):Promise<Boolean>{
-        const result = await this.employeeRepository.softDelete(id);
-        if (result.affected == 1)
-            return true;
-        else
-            return false;
+    async deleteEmployee(id:number){
+        const employee = await this.employeeRepository.findOneBy(id);
+        const result = await this.employeeRepository.softRemove(employee);
     }
 
 }
