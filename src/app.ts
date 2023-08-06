@@ -1,4 +1,8 @@
 
+import * as dotenv from "dotenv"
+dotenv.config({path:__dirname+'/.env'});
+
+
 //const http = require("http");
 import express, { NextFunction, Request, Response } from "express";
 import "reflect-metadata"
@@ -7,6 +11,11 @@ import loggerMiddleware from "./middleware/logger.middleWare";
 import employeeRoute from "./route/employee.route";
 import HttpException from "./exception/http.exception";
 import errorMiddleWare from "./middleware/error.middleware";
+import DepartmentController from "./controller/department.controller";
+import departmentRoute from "./route/department.route";
+import roleRoute from "./route/role.route";
+
+import logger from "./logger/logger";
 
 
 
@@ -17,7 +26,8 @@ server.use(loggerMiddleware); //use loggerMidlleware before employeerouter.
 server.use('/employees',employeeRoute); // any requests ending with /employees, then call employeeRouter
 //error middleware should be used after the requests have gone to the route - takes 4th parameter - error object.
 
-
+server.use('/departments',departmentRoute);
+server.use('/roles',roleRoute);
 
 
 //'/' in get indicates request until / from localhost 3000 will be responsed. if any other data is provided after / prints error.
@@ -49,6 +59,7 @@ server.use(errorMiddleWare);
 
     server.listen(3000,()=>{
     console.log("server is listening to 3000")});
+    logger.info("Server-started");
 
 })();
 //package.json file

@@ -1,10 +1,14 @@
-import {Column, Entity ,CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, DeleteDateColumn, OneToOne} from "typeorm";
+import {Column, Entity ,CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, DeleteDateColumn, OneToOne, ManyToMany, ManyToOne, JoinColumn} from "typeorm";
 import Address from "./address.entity";
+import AbstractEntity from "./abstract-entity";
+import Department from "./department.entity";
+import { Role } from "../utils/role.enum";
+
 
 @Entity("employees")
-class Employee{
-    @PrimaryGeneratedColumn()
-    id:number;
+class Employee extends AbstractEntity{
+    //@PrimaryGeneratedColumn()
+    //id:number;
     @Column()
     name: string;
     @Column({nullable:true})
@@ -12,18 +16,33 @@ class Employee{
     @Column()
     email: string;
 
-    @CreateDateColumn()
-    createdAt: Date;
-    @UpdateDateColumn()
-    updatedAt: Date;
+    @Column()
+    joining_Date: string;
 
-    @DeleteDateColumn() //soft delete.
-    deletedAt: Date;
+    @Column()
+    experience: number;
+
+    //@CreateDateColumn()
+    //createdAt: Date;
+    //@UpdateDateColumn()
+    //updatedAt: Date;
+
+    //@DeleteDateColumn() //soft delete.
+    //deletedAt: Date;
 
     @OneToOne(()=>Address,(address)=>address.employee,{cascade: true}) // entity pointing to. function 
     address:Address;
 
+    @Column()
+    password:string;
 
+    @ManyToOne(()=>Department,(department)=>department.employee)
+    @JoinColumn()
+    department: Department;
+
+    
+    @Column({default:Role.DEVELOPER})
+    role:Role;
 }
 
 export {Employee}

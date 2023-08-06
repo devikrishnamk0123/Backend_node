@@ -1,31 +1,29 @@
-import { IsNotEmpty, IsString, isNotEmpty } from "class-validator";
+import { IsOptional, IsString } from "class-validator";
 
-
-class createAddressDto{
-
-    @IsNotEmpty()
+class PatchAddressDto{
+    @IsOptional()
     @IsString()
     address_line_1: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     address_line_2:string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     city:string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     state:string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     country:string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     pincode: string;
 }
 
-export default createAddressDto;
+export default PatchAddressDto;

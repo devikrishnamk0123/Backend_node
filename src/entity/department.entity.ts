@@ -1,10 +1,17 @@
+import { Column, Entity, OneToMany } from "typeorm";
+import AbstractEntity from "./abstract-entity";
+import { Employee } from "./employee.entity";
 
 
-class Department(){
+@Entity()
+class Department extends AbstractEntity{
 
-    id: number;
-
+    @Column()
     name:string;
 
+    @OneToMany(()=>Employee,(employee)=>employee.department,{cascade:true})
+    employee:Employee;
 
 }
+
+export default Department;
