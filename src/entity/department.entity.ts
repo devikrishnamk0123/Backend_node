@@ -10,7 +10,7 @@ class Department extends AbstractEntity{
     name:string;
 
     @OneToMany(()=>Employee,(employee)=>employee.department,{cascade:true})
-    employee:Employee;
+    employee?:Employee;
 
 }
 

@@ -14,15 +14,16 @@ import AppDataSource from "../db/postgres.db";
 import Department from "../entity/department.entity";
 import PatchEmployeeDto from "../dto/patch-empolyee.dto";
 import logger from "../logger/logger";
+import DepartmentService from "./department.service";
 
 
 class EmployeeService{
     //private employeeRepository: employeeRepository;
     //private departmentRepository: DepartmentRepository;
 
-    constructor(private employeeRepository:employeeRepository)
+    constructor(private employeeRepository:employeeRepository,private departmentService:DepartmentService)
     {
-        //this.employeeRepository = new EmployeeRepository();
+        //this.employeeRepository = new EmployeeRepository()
     }
 
     getAllEmployees():Promise<Employee[]>{
@@ -68,12 +69,12 @@ class EmployeeService{
         employee.name = empObj.name;
         employee.password = await bcrypt.hash(empObj.password,10);
         employee.role = empObj.role;
-        const departmentRepository = new DepartmentRepository(AppDataSource.getRepository(Department));
-        const departmentObj = await departmentRepository.findOneBy(empObj.departmentId);
-        employee.department = departmentObj;
-        //const dpartment = await this.
-        //employee.de = empObj.departmentId;
-
+        //const departmentRepository = new DepartmentRepository(AppDataSource.getRepository(Department));
+        //const department_service = new DepartmentService(departmentRepository)
+        const departmentObj = await this.departmentService.getDepartmentById(empObj.departmentId);
+        if (!departmentObj){
+            throw new HttpException(404,`No department found with the id: ${empObj}`)
+        }
         employee.updatedAt = new Date();
 
         return this.employeeRepository.saveId(employee);
@@ -98,8 +99,8 @@ class EmployeeService{
         newAddress.state = empObj.address.state;
         employee.address = newAddress;
 
-        const departmentRepository = new DepartmentRepository(AppDataSource.getRepository(Department));
-        const departmentObj = await departmentRepository.findOneBy(empObj.departmentId);
+        //const departmentRepository = new DepartmentRepository(AppDataSource.getRepository(Department));
+        const departmentObj = await this.departmentService.getDepartmentById(empObj.departmentId);
         if (!departmentObj){
             throw new HttpException(404,"No department found with the given id")
         }
@@ -163,8 +164,8 @@ class EmployeeService{
             }
 
             if (empObj.departmentId){
-                const departmentRepository = new DepartmentRepository(AppDataSource.getRepository(Department));
-                const departmentObj = await departmentRepository.findOneBy(empObj.departmentId);
+                //const departmentRepository = new DepartmentRepository(AppDataSource.getRepository(Department));
+                const departmentObj = await this.departmentService.getDepartmentById(empObj.departmentId);
                 if (!departmentObj){
                     throw new HttpException(404,"No department found with the given id")
                 }

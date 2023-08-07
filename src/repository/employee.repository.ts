@@ -43,8 +43,10 @@ class EmployeeRepository{
 
     async findOneByemail(email:string):Promise<Employee>{
         const employee = await this.employeeRepository.findOne({where:{email:email},relations:['department','address']});
-        const employeeWithDepartmentId = {...employee,department_id:employee.department? employee.department.id:null,department:undefined};
-        return employeeWithDepartmentId;
+        if (employee){
+            const employeeWithDepartmentId = {...employee,department_id:employee.department? employee.department.id:null,department:undefined};
+            return employeeWithDepartmentId;
+        }
     }
 
     //write all other functions

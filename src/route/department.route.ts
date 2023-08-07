@@ -10,4 +10,5 @@ const departmentService = new DepartmentService(new DepartmentRepository(AppData
 const departmentController = new DepartmentController(departmentService);
 const departmentRoute = departmentController.router;
 
-export default departmentRoute;
+export{departmentService};
+export default departmentRoute

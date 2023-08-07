@@ -14,7 +14,7 @@ class AbstractEntity{
     updatedAt: Date;
 
     @DeleteDateColumn() //soft delete.
-    deletedAt: Date;
+    deletedAt?: Date;
 
 }
 

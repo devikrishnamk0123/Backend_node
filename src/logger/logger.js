@@ -12,5 +12,5 @@ var logger = winston.createLogger({
     ]
 });
 // Log operation information
-logger.info('Operation successful', { operation: 'myOperation', status: 'success' });
-logger.error('Operation failed', { operation: 'myOperation', status: 'failure', error: 'An error occurred' });
+//logger.info('Operation successful', { operation: 'myOperation', status: 'success' });
+//logger.error('Operation failed', { operation: 'myOperation', status: 'failure', error: 'An error occurred' });

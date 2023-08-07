@@ -1,4 +1,3 @@
-
 import express, { NextFunction } from "express";
 import EmployeeService from "../service/employee.service";
 import authenticate from "../middleware/authenticate.middleware";
@@ -10,6 +9,9 @@ import ValidationException from "../exception/validation-exception";
 import DepartmentService from "../service/department.service";
 import PutDepartmenDto from "../dto/put-department.dto";
 import { Role } from "../utils/role.enum";
+import logger from "../logger/logger";
+import { MetadataWithSuchNameAlreadyExistsError } from "typeorm";
+import HttpException from "../exception/http.exception";
 
 class DepartmentController{
     public router: express.Router;
@@ -20,7 +22,7 @@ class DepartmentController{
         this.router.get("/",authenticate,this.getAllDepartments);
         this.router.get("/:id",authenticate,this.getDepartmentById);
         this.router.put("/:id",authenticate,this.putDepartmentById);
-        this.router.post("/",authenticate,Authorize,this.postDepartment);
+        this.router.post("/",authenticate,Authorize([Role.HR]),this.postDepartment);
         this.router.delete("/:id",authenticate,Authorize([Role.HR]),this.deleteDepartment);
     }
 
@@ -31,6 +33,7 @@ class DepartmentController{
             const errors = await validate(createDepartmentDto);
             if (errors.length > 0){
                 console.log(errors);
+                logger.info("Validation errors in posting department")
                 throw new ValidationException(400,`Validation errors`,errors);
             }
             else{
@@ -40,6 +43,7 @@ class DepartmentController{
                 // const password = req.body.password;
                 // const role = req.body.role;
                 const department = await this.departmentService.postDepartment(createDepartmentDto);
+                logger.info("Posting department successful");
                 res.status(200).send(department);
             }
         }
@@ -48,9 +52,16 @@ class DepartmentController{
         }
     }
 
-    getAllDepartments = async (req:express.Request,res:express.Response)=>{
-        const employees = await this.departmentService.getAllDepartments();
-        res.status(200).send(employees);
+    getAllDepartments = async (req:express.Request,res:express.Response,next:NextFunction)=>{
+        try{
+            const employees = await this.departmentService.getAllDepartments();
+            logger.info("Get all departments successful")
+            res.status(200).send(employees);
+        }
+        catch(error){
+            next(error); 
+        }
+        
     }
 
     getDepartmentById = async (req:express.Request,res:express.Response,next:NextFunction)=>{
@@ -86,7 +97,10 @@ class DepartmentController{
 
                 // const updatedAt = new Date();
                 const deptId = Number(req.params.id);
-                const department = await this.departmentService.putEmployeeById(putDepartmentDto,deptId);
+                const department = await this.departmentService.putDepartmentById(putDepartmentDto,deptId);
+                if (!department){
+                    throw new HttpException(404,`Department not found with id:${deptId}`)
+                }
                 //employee.name = req.body.name;
                 //employee.email = req.body.email;
                 res.status(200).send(department);
@@ -100,9 +114,12 @@ class DepartmentController{
     deleteDepartment = async(req:express.Request,res:express.Response,next:NextFunction)=>{
         try{
             const deptId = Number(req.params.id);
-            const employee = await this.departmentService.getDepartmentById(deptId);
+            //const employee = await this.departmentService.getDepartmentById(deptId);
 
             const department = await this.departmentService.deleteDepartment(deptId);
+            if (!department){
+                throw new HttpException(404,`Department with id: ${deptId} not found`)
+            }
             res.status(200).send(department);
         }
         catch(error){

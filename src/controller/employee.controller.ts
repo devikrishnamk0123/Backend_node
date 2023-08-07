@@ -44,11 +44,13 @@ class EmployeeController{
 
     getEmployeeById = async (req:express.Request,res:express.Response,next:NextFunction)=>{
         try{
+            const reqTime = Date.now();
         
             const employeeId = Number(req.params.id);
             const employee = await this.employeeService.getEmployeeById(employeeId);
             logger.info("Get employee by id successful")
-            res.status(200).send(employee);
+            //const responseLength = employee.length;
+            res.status(200).send({employee,errors:"null",message:"OK",meta:{length: 1, took : `${Date.now()-reqTime}`,total: 1}});
         }
         catch(error){
             //logger.info("Employee with given id not found")
@@ -59,6 +61,7 @@ class EmployeeController{
 
     putEmployeeById = async(req:express.Request,res:express.Response,next:NextFunction)=>{
         try{
+            const reqTime = Date.now();
             const employeeId = Number(req.params.id);
 
             const putEmployeeDto = plainToInstance(PutEmployeeDto,req.body);
@@ -82,7 +85,7 @@ class EmployeeController{
                 //employee.name = req.body.name;
                 //employee.email = req.body.email;
                 logger.info("put employee by id succesful")
-                res.status(200).send(employee);
+                res.status(200).send({employee,errors:'null',message:"OK",meta:{length:1,took:`${Date.now()-reqTime}`,total:1}});
             }
         }
         catch(error){
@@ -92,6 +95,7 @@ class EmployeeController{
 
     postEmployee = async(req:express.Request,res:express.Response,next:NextFunction)=>{
         try{
+            const reqTime = Date.now()
             const createEmployeeDto = plainToInstance(CreateEmployeeDto,req.body) //converts json to object of createEmployeeDto
             const errors = await validate(createEmployeeDto);
             if (errors.length > 0){
@@ -107,7 +111,7 @@ class EmployeeController{
                 // const role = req.body.role;
                 const employee = await this.employeeService.postEmployee(createEmployeeDto);
                 logger.info("posting employee successful");
-                res.status(200).send(employee);
+                res.status(200).send({employee,errors:'null',message:"OK",meta:{length:1,took:`${Date.now()-reqTime}`,total:1}});
             }
         }
         catch(error){
@@ -131,12 +135,13 @@ class EmployeeController{
     }
 
     loginEmployee = async(req:Request,res:Response,next:NextFunction)=>{
+        const reqTime = Date.now()
         const email = req.body.email;
         const password = req.body.password;
         try{
             const {token,employee} = await this.employeeService.loginEmployee(email,password);
             logger.info(`Login successful`);
-            res.status(200).send({data:token,employee});
+            res.status(200).send({data:token,employee,errors:'null',message:"OK",meta:{length:1,took:`${Date.now()-reqTime}`,total:1}});
         }
         catch(error)
         {
@@ -148,6 +153,7 @@ class EmployeeController{
 
     patchEmployee = async(req:Request,res:Response,next:NextFunction)=>{
         try{
+            const reqTime = Date.now()
             const patchEmployeeDto = plainToInstance(PatchEmployeeDto,req.body);
             const errors = await validate(patchEmployeeDto);
             if (errors.length > 0){
@@ -159,7 +165,7 @@ class EmployeeController{
                 const empId = Number(req.params.id);
                 const employee = await this.employeeService.patchEmployee(patchEmployeeDto,empId)
                 logger.info(`patch employee with id: ${empId} successful`)
-                res.status(200).send(employee);
+                res.status(200).send({employee,errors:'null',message:"OK",meta:{length:1,took:`${Date.now()-reqTime}`,total:1}});
             }
         }
         catch(error){

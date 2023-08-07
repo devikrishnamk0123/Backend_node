@@ -12,7 +12,7 @@ class Employee extends AbstractEntity{
     @Column()
     name: string;
     @Column({nullable:true})
-    age:number;
+    age?:number;
     @Column()
     email: string;
 

@@ -25,31 +25,37 @@ class DepartmentService {
 
     async getDepartmentById(id:number):Promise<Department|null>
     {
-        const employee = await this.departmentRepository.findOneBy(id);
-        if (!employee){
-            throw new HttpException(404,`Employee not found with id: ${id}`);
+        const department = await this.departmentRepository.findOneBy(id);
+        if (!department){
+            throw new HttpException(404,`Department not found with id: ${id}`);
             //throw new Error(`Employee not found with id: ${id}`); 
         }
         //employee.name = "xyz";
         //return this.employeeRepository.findOneBy(id);
-        return employee;
+        return department;
     }
 
-    async putEmployeeById(deptObj:PutDepartmenDto,id:number):Promise<Department>
+    async putDepartmentById(deptObj:PutDepartmenDto,id:number):Promise<Department>
     {
 
         console.log(id);
         const department = await this.departmentRepository.findOneBy(id);
-        department.name = deptObj.name;
-        department.updatedAt = new Date();
+        if (department)
+        {
+            department.name = deptObj.name;
+            department.updatedAt = new Date();
 
-        return this.departmentRepository.saveId(department);
+            return this.departmentRepository.saveId(department);
+        }
     }
 
     async deleteDepartment(id:number):Promise<Department>{
         const department = await this.departmentRepository.findOneBy(id);
-        const removeDepartment = await this.departmentRepository.softRemove(department);
-        return removeDepartment;
+        if (department)
+        {
+            const removeDepartment = await this.departmentRepository.softRemove(department);
+            return removeDepartment;
+        }
     }
 }
 
