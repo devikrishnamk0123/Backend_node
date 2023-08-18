@@ -1,0 +1,32 @@
+[2023-08-07T07:29:43.389Z] [32minfo[39m: Server-started
+[2023-08-07T07:29:51.170Z] [32minfo[39m: Get employee by id successful
+[2023-08-07T07:30:44.648Z] [32minfo[39m: put employee by id succesful
+[2023-08-07T07:32:02.868Z] [32minfo[39m: Server-started
+[2023-08-07T07:32:05.837Z] [32minfo[39m: Login successful
+[2023-08-07T07:36:07.659Z] [32minfo[39m: Server-started
+[2023-08-07T07:36:59.744Z] [32minfo[39m: Login successful
+[2023-08-07T07:40:25.185Z] [32minfo[39m: Server-started
+[2023-08-07T07:40:46.664Z] [32minfo[39m: Login successful
+[2023-08-07T07:42:16.888Z] [32minfo[39m: Validation errors in posting employee details
+[2023-08-07T07:42:42.096Z] [32minfo[39m: GetEmployeeById-Service_layer-Employee not found with id: 17
+[2023-08-07T07:42:52.735Z] [32minfo[39m: Get employee by id successful
+[2023-08-07T07:46:46.811Z] [32minfo[39m: putEmployeeById-Service-layer-Employee not found with id: 18
+[2023-08-07T07:49:02.122Z] [32minfo[39m: patch employee with id: 27 successful
+[2023-08-07T07:50:57.440Z] [32minfo[39m: Employee deleted with id: 27
+[2023-08-07T07:55:53.240Z] [32minfo[39m: Server-started
+[2023-08-07T08:01:36.929Z] [32minfo[39m: Server-started
+[2023-08-07T08:04:12.660Z] [32minfo[39m: Server-started
+[2023-08-07T08:08:04.204Z] [32minfo[39m: Server-started
+[2023-08-07T08:09:28.029Z] [32minfo[39m: Server-started
+[2023-08-07T08:09:44.048Z] [32minfo[39m: Get all departments successful
+[2023-08-07T08:11:20.127Z] [32minfo[39m: Server-started
+[2023-08-07T08:11:24.246Z] [32minfo[39m: Posting department successful
+[2023-08-07T08:13:17.496Z] [32minfo[39m: Server-started
+[2023-08-07T08:14:46.096Z] [32minfo[39m: Server-started
+[2023-08-07T08:15:59.216Z] [32minfo[39m: Server-started
+[2023-08-07T08:18:41.279Z] [32minfo[39m: Server-started
+[2023-08-07T08:21:23.602Z] [32minfo[39m: Server-started
+{"level":"info","message":"Operation successful","operation":"myOperation","status":"success"}
+{"error":"An error occurred","level":"error","message":"Operation failed","operation":"myOperation","status":"failure"}
+[2023-08-07T08:30:28.760Z] [32minfo[39m: Server-started
+[2023-08-07T12:21:43.695Z] [32minfo[39m: Server-started
